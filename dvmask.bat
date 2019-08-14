@@ -9,14 +9,13 @@ exit /B 0
 :maskcommand
 @ECHO
 
-@rem   you need to change four parameters, project, key, license and log
+@rem   you may need to change location of dataveil64.exe to match where you unpacked it
+@rem   you then need to change four parameters: project, key, license and log
 @rem   do not change or remove any of the ^ characters, make sure the format remains exactly the same
 @rem   project should be the location of the project file.  Do not put the file in any c:\program files   folders 
 @rem   key is the key defined when you created the project.    Do not put the file in any c:\program files   folders
 @rem   license is the data masking license.  Do not put the file in any c:\program files   folders
 @rem   log is the location of the data masking software logs.  Do not put the file in any c:\program files   folders
-
-@rem   finally you may also need to change location of dataveil64.exe to match where you unpacked it
 
 START "MaskWindow" /WAIT "D:\\DataVeil\\bin\\dataveil64.exe" ^
 --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --compilewarning=continue --createdirs=true ^

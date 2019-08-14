@@ -16,6 +16,8 @@ exit /B 0
 @rem   license is the data masking license.  Do not put the file in any c:\program files   folders
 @rem   log is the location of the data masking software logs.  Do not put the file in any c:\program files   folders
 
+@rem   finally you may also need to change location of dataveil64.exe to match where you unpacked it
+
 START "MaskWindow" /WAIT "D:\\DataVeil\\bin\\dataveil64.exe" ^
 --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --compilewarning=continue --createdirs=true ^
 --project="D:\\DV_Files\\FinMask_av.dvp" ^

@@ -81,3 +81,11 @@ This is an example of succesful masking execution:
 2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 C:\Windows\system32>IF 0 EQU 0 (GOTO cleanexit ) 
 2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 
 ```
+
+
+## Supporting Videos
+
+Please watch the following videos:
+
+https://youtu.be/f0lj6bRFxGQ
+https://youtu.be/sh1_vk-1QY8

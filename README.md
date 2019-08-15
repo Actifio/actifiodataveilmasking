@@ -1,4 +1,4 @@
-# actifiodataveilmasking
+# Microsoft SQL Masking with Actifio and DataVeil
 
 This readme describes hwo to use the bat file in this respository along with the DataVeil software to perform data masking with Actifio.
 

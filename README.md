@@ -45,7 +45,7 @@ There are five customizations needed in the bat file:
 
 If you change the .bat file name you need to change the workflow to point to the new name of the script
 You must use the C:\Program Files\Actifio\Scripts folder, no other folder can be used
-DO NOT put any other files called by the Batch file into C:\Program Files
+DO NOT put any other files called by the Batch file into C:\Program Files
 
 ## Test your bat file
 

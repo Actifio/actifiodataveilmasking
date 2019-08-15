@@ -87,6 +87,6 @@ This is an example of succesful masking execution:
 
 Please watch the following videos:
 
-https://youtu.be/f0lj6bRFxGQ
-https://youtu.be/sh1_vk-1QY8
-https://youtu.be/VqxYX1L-mWA
+* https://youtu.be/f0lj6bRFxGQ
+* https://youtu.be/sh1_vk-1QY8
+* https://youtu.be/VqxYX1L-mWA

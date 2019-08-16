@@ -144,7 +144,7 @@ There are six customizations needed in the bat file:
 1. Change connection details to match your database
 
 If you change the .sh file name you need to change the workflow to point to the new name of the script
-You must use the /actifio/scripts folder, no other folder can be used
+You must use the /act/scripts folder, no other folder can be used
 
 ### Test your shell script
 
@@ -153,7 +153,7 @@ Presuming the relevant database is still mounted and ready.
 Run the shell script file with the word ‘test’ as shown in the example:
 
 ~~~
-/actifio/scripts/dvmask.sh test
+/act/scripts/dvmask.sh test
 ~~~
 
 Now check the DataVeil log file defined in your bat file to ensure good masking has occurred.  You should actually see the result in your shell window anyway, but it is good to evaluate the logs were created.

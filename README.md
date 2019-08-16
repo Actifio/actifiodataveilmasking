@@ -120,14 +120,14 @@ For each stage of the process use a different database name.  For instance:
 * Name when mounted to masking server:   CPROD
 * Name when mounted to development server:   MPROD
 
-DataVeil needs to be unzp onto your masking server.  Unzip it and then create folders to hold your working files and logs.
+DataVeil needs to be unzip onto your masking server.  Unzip it and then create folders to hold your working files and logs.
 
 The steps we follow will be:
 
 1. Unzip DataVeil onto your masking server (you also need JRE 1.8)
 1. License DataVeil and note where you put the license file
 1. Mount production database to masking server using the ‘middle’ name (i.e. mount ‘prod’ as ‘CPROD’)
-1. Create Project using Actifio DataVeil and note the Project key name
+1. Connect to the database and create Project using Actifio DataVeil and note the Project key name
 1. Save Project and note where you save the project
 1. Install shell script onto masking server and customize it
 
@@ -141,7 +141,6 @@ There are six customizations needed in the bat file:
 1. Change key defined in project to match yours
 1. Change license path and name to match yours
 1. Change log file path
-1. Change connection details to match your database
 
 If you change the .sh file name you need to change the workflow to point to the new name of the script
 You must use the /act/scripts folder, no other folder can be used
@@ -150,7 +149,7 @@ Note that the string to start DataVeil can be in the sheel script in either of t
 
 With all commands in one line:
 ```
-/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveil/userfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveil/log/CPROD.log" --license="/opt/dataveil/userfiles/license.dvl" --con="{sid=CPROD,host=10.65.5.125,port=1521,user=scott,password=tiger}"
+/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveil/userfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveil/log/CPROD.log" --license="/opt/dataveil/userfiles/license.dvl"
 ```
 
 Or each parameter on a separate line separated with a backslash.   While this makes it visually eaiser to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
@@ -165,8 +164,7 @@ Then confirm there are no spaces after each backlash.
 --project="/opt/dataveil/userfiles/prodmask.dvp" \
 --key="actifio" \
 --log="/opt/dataveil/log/CPROD.log" \
---license="/opt/dataveil/userfiles/license.dvl" \
---con="{sid=CPROD,host=10.65.5.125,port=1521,user=scott,password=tiger}"
+--license="/opt/dataveil/userfiles/license.dvl"
 ```
 
 ### Test your shell script

@@ -146,6 +146,29 @@ There are six customizations needed in the bat file:
 If you change the .sh file name you need to change the workflow to point to the new name of the script
 You must use the /act/scripts folder, no other folder can be used
 
+Note that the string to start DataVeil can be in the sheel script in either of these formats:
+
+With all commands in one line:
+```
+/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveil/userfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveil/log/CPROD.log" --license="/opt/dataveil/userfiles/license.dvl" --con="{sid=CPROD,host=10.65.5.125,port=1521,user=scott,password=tiger}"
+```
+
+Or each parameter on a separate line separated with a backslash.   While this makes it visually eaiser to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
+
+```
+:set list
+```
+Then confirm there are no spaces after each backlash.
+
+```
+/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true \
+--project="/opt/dataveil/userfiles/prodmask.dvp" \
+--key="actifio" \
+--log="/opt/dataveil/log/CPROD.log" \
+--license="/opt/dataveil/userfiles/license.dvl" \
+--con="{sid=CPROD,host=10.65.5.125,port=1521,user=scott,password=tiger}"
+```
+
 ### Test your shell script
 
 Presuming we have created the project file and placed the script file in the correct spot.

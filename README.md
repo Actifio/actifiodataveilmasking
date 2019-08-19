@@ -221,4 +221,5 @@ Fri Aug 16 13:18:07 AEST 2019 INFO DataVeil terminating with exit code = 0
 
 Please watch the following videos:
 
-* TBA
+* https://youtu.be/VNzXm4PR1V0
+* https://youtu.be/rbhKSlT8C90

@@ -224,6 +224,7 @@ Please watch the following videos:
 * https://youtu.be/VNzXm4PR1V0
 * https://youtu.be/rbhKSlT8C90
 * https://youtu.be/8_jyF1EKO-M
+* https://youtu.be/MIGDfGtPA88
 
 # Trouble Shooting
 

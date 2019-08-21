@@ -239,3 +239,21 @@ This actually doesn't appear to block anything from working.   To prevent this m
 ```
 sudo yum install java-1.8.0-openjdk-devel
 ```
+
+### While manually masking missing XSLT messages appear
+
+You may see this error:
+
+```
+Wed Aug 21 11:01:23 AEST 2019 INFO FATAL ERROR:  '/act/xslt/masking_result_xhtml.xslt (No such file or directory)'
+Wed Aug 21 11:01:23 AEST 2019 INFO            :/act/xslt/masking_result_xhtml.xslt (No such file or directory)
+```
+This doesn't block successful masking.  However report generation may not have occurred.
+To prevent this error, you can copy two files to the relevant location.  Presuming you unzipped dataveil into /opt/dataveil then:
+
+```
+mkdir /act/xslt
+cp /opt/dataveil/xslt/masking_result_xhtml.xslt /act/xslt/.
+cp /opt/dataveil/xslt/reports.css /act/xslt/.
+```
+

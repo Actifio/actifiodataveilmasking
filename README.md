@@ -224,3 +224,18 @@ Please watch the following videos:
 * https://youtu.be/VNzXm4PR1V0
 * https://youtu.be/rbhKSlT8C90
 * https://youtu.be/8_jyF1EKO-M
+
+# Trouble Shooting
+
+### When starting DataVeil on Linux you get a no javac message
+
+You may see this error:
+
+```
+[root@sydoradv2 dataveil]# ./DataVeilLaunchNix
+which: no javac in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin)
+```
+This actually doesn't appear to block anything from working.   To prevent this message from appearing, you can install the following package:
+```
+sudo yum install java-1.8.0-openjdk-devel
+```

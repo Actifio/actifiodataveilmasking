@@ -96,6 +96,27 @@ Please watch the following videos:
 * https://youtu.be/VqxYX1L-mWA
 
 
+### DataVeil Native Functions
+
+DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
+
+1. On the masking server create a dummy database such as 'dummydb'.  This database does not need any data in it, although we did create a table in the DB just to make it look normal.
+1. In your dataveil folder there is a file located in a location similar to:   d:\dataveil\native\sqlserver\install_01_assembly.sql
+Edit this file and change the database name to 'dummydb' and the location of the relevant dll called DataVeilNativeCLR.dll
+You will need to make a total of three edits.
+1. Having edited the install_01_assembly.sql file, you need to load and run it using Microsoft SQL Server Manager
+1. Presuming the first SQL file runs without error, then load and run the second SQL file called install_02_udf.sql
+1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
+1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the dummydb name in the relevant section of the project with .dbo at the end.   So in this example we used dummydb and it appears in the project as shown in the image below:
+
+![DataVeil Native Function](https://github.com/Actifio/actifiodataveilmasking/blob/master/dv_sql_native.jpg)
+
+
+Now when running masking, in the log file you should see a line like this:
+```
+Fri Aug 23 12:02:23 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on dummydb.dbo
+```
+
 
 ## Oracle Masking with Actifio and DataVeil
 

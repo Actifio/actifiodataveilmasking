@@ -7,9 +7,12 @@
 #  3.  The keyname saved with the project
 #  4.  Log file location and name
 #  5.  The path to and filename of the license key
+#  6.  Optionally you need to unhash the native functions loader and edit it
 
 maskfunc()
 {
+###  native functions loader, SID and SQL script name and file path to the native library folders may need to chnage
+# su - oracle -c 'cd /opt/dataveil/native/oracle;export ORACLE_SID=CPROD;sqlplus / as sysdba @/act/scripts/loadnativefunctions.sql;exit'
 
 /opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveil/userfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveil/log/CPROD.log" --license="/opt/dataveil/userfiles/license.dvl"
 

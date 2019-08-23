@@ -247,6 +247,37 @@ Please watch the following videos:
 * https://youtu.be/8_jyF1EKO-M
 * https://youtu.be/MIGDfGtPA88
 
+### DataVeil Native Functions
+
+DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   This comes in two parts.   Firstly you need to add /act/scripts/loadnativefunctions.sql
+using the file found here in Github.   There are two things to customize:
+
+1. In the first line the DVNative.jar file path may need to be updated
+1. In the second line, the schema name needs to match the one being used by the DataVeil profile
+```
+exec dbms_java.loadjava('-verbose -synonym -grant PUBLIC /opt/dataveil/native/oracle/DVNative.jar');
+ALTER SESSION SET CURRENT_SCHEMA = scott;
+@setup_functions.sql
+exit;
+```
+
+Once you have set this file up,  there is a hashed line in dvmask.sh that needs to be unhashed and edited:
+
+1.  It uses su - oracle.   Normally the oracle user is used for mounts, but this might not be the case
+1.  It switches to /opt/dataveil/native/oracle but your DataVeil install location may be different
+1.  It uses an SID of CPROD.   Yours will be different
+1.  It calls /act/scripts/loadnativefunctions.sql   Clearly if you used a different name and location these need to be set correctly.
+
+```
+su - oracle -c 'cd /opt/dataveil/native/oracle;export ORACLE_SID=CPROD;sqlplus / as sysdba @/act/scripts/loadnativefunctions.sql;exit'
+```
+
+You can validate it worked by examining the DataVeil logs and looking for a line like this (where scott is the schema name, yours may be different):
+```
+Fri Aug 23 15:30:15 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on "SCOTT"
+```
+
+
 # Trouble Shooting
 
 ### When starting DataVeil on Linux you get a no javac message

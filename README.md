@@ -86,6 +86,19 @@ This is an example of succesful masking execution:
 2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 
 ```
 
+### TroubleShooting 
+
+This section will contain some suggestions for troubleshooting
+
+#### Unmount or reprovision fails with permissions errors
+
+During unmount or unmount portion of reprovision job, you may get an error like this:
+
+```
+5242: Actifio Connector: Failed to unmount applications for mounted image. SQL detach script failed with error Msg 5011, Level 14, State 9, Server SYDWINDV1, Line 1 User does not have permission to alter database 'pmbigdb', the database does not exist, or the database is not in a state that allows access checks. Msg 5069, Level 16, State 1, Server SYDWINDV1, Line 1 ALTER DATABASE statement failed. Msg 916, Level 14, State 1, Server SYDWINDV1, Line 1 The server principal "NT AUTHORITY\SYSTEM" is not able to access the database "pmbigdb" under the current security context.
+```
+Solution:  When mounting with the workflow, make sure the workflow has a valid user/password in the Advanced Setting that has the right to manage SQL DBs.
+
 
 ### Supporting Videos For Microsoft SQL
 

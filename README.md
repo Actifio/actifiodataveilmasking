@@ -113,7 +113,7 @@ Please watch the following videos:
 
 DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
-1. On the masking server create a dummy database such as 'dummydb'.  This database does not need any data in it.
+1. On the masking server create a dummy database called 'dummydb'.  This database does not need any data in it.
 1. In your dataveil folder there is a file located in a location similar to:   d:\dataveil\native\sqlserver\install_01_assembly.sql
 Edit this file and change the database name to 'dummydb' and the location of the relevant dll called DataVeilNativeCLR.dll
 You will need to make a total of three edits.
@@ -132,12 +132,12 @@ Fri Aug 23 12:02:23 AEST 2019 INFO Found DataVeil native function library versio
 
 #### Upgrading MS SQL Native Functions
 
-A new version of dataveil may bring a new version of native function, in which case the old native functions will no longer work. In this example Native Functions 1.0.0 is installed, but DataVeil is now expecting 1.0.0:
+A new version of dataveil may bring a new version of native function, in which case the old native functions will no longer work. In this example Native Functions 1.0.0 is installed, but DataVeil is now expecting 1.0.1:
 ```
 Tue Sep 03 09:00:13 AEST 2019 INFO DataVeil native function library is not available on dummydb.dbo. Expecting DataVeil Native Library version 1.0.1 or later. Found incompatible version 1.0.0
 ```
 To upgrade the simplest procedure is to:
-1.  Delete 'dummydb'
+1.  Delete 'dummydb' 
 1.  Reinstall Native Functions as per the instructions above.
 
 

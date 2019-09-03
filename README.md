@@ -113,7 +113,7 @@ Please watch the following videos:
 
 DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
-1. On the masking server create a dummy database such as 'dummydb'.  This database does not need any data in it, although we did create a table in the DB just to make it look normal.
+1. On the masking server create a dummy database such as 'dummydb'.  This database does not need any data in it.
 1. In your dataveil folder there is a file located in a location similar to:   d:\dataveil\native\sqlserver\install_01_assembly.sql
 Edit this file and change the database name to 'dummydb' and the location of the relevant dll called DataVeilNativeCLR.dll
 You will need to make a total of three edits.
@@ -129,6 +129,16 @@ Now when running masking, in the log file you should see a line like this:
 ```
 Fri Aug 23 12:02:23 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on dummydb.dbo
 ```
+
+#### Upgrading MS SQL Native Functions
+
+A new version of dataveil may bring a new version of native function, in which case the old native functions will no longer work. In this example Native Functions 1.0.0 is installed, but DataVeil is now expecting 1.0.0:
+```
+Tue Sep 03 09:00:13 AEST 2019 INFO DataVeil native function library is not available on dummydb.dbo. Expecting DataVeil Native Library version 1.0.1 or later. Found incompatible version 1.0.0
+```
+To upgrade the simplest procedure is to:
+1.  Delete 'dummydb'
+1.  Reinstall Native Functions as per the instructions above.
 
 
 ## Oracle Masking with Actifio and DataVeil
@@ -159,7 +169,7 @@ DataVeil needs to be unzip onto your masking server.  Unzip it and then create f
 The steps we follow will be:
 
 1. Unzip DataVeil onto your masking server (you also need JRE 1.8)
-1. License DataVeil and note where you put the license file
+1. License DataVeil and note where you put the license file.  Do not put it into the same folder a DataVeil as this will complicate upgrades.
 1. Mount production database to masking server using the ‘middle’ name (i.e. mount ‘prod’ as ‘CPROD’)
 1. Connect to the database and create Project using Actifio DataVeil and note the Project key name
 1. Save Project and note where you save the project
@@ -171,10 +181,10 @@ The script file must be located in /act/scripts
 There are six customizations needed in the bat file:
 
 1. Change dataveil path to match yours
-1. Change Project path and name to match yours
+1. Change Project path and name to match yours.    Make sure the project files are not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveilfiles
 1. Change key defined in project to match yours
-1. Change license path and name to match yours
-1. Change log file path
+1. Change license path and name to match yours.   Make sure the license file is not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveilfiles
+1. Change log file path.  Make sure the log folder is not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveillogs
 
 If you change the .sh file name you need to change the workflow to point to the new name of the script
 You must use the /act/scripts folder, no other folder can be used
@@ -183,7 +193,7 @@ Note that the string to start DataVeil can be in the sheel script in either of t
 
 With all commands in one line:
 ```
-/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveil/userfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveil/log/CPROD.log" --license="/opt/dataveil/userfiles/license.dvl"
+/opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveilfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveillogs/CPROD.log" --license="/opt/dataveilfiles/license.dvl"
 ```
 
 Or each parameter on a separate line separated with a backslash.   While this makes it visually eaiser to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
@@ -195,10 +205,10 @@ Then confirm there are no spaces after each backlash.
 
 ```
 /opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true \
---project="/opt/dataveil/userfiles/prodmask.dvp" \
+--project="/opt/dataveilfiles/prodmask.dvp" \
 --key="actifio" \
---log="/opt/dataveil/log/CPROD.log" \
---license="/opt/dataveil/userfiles/license.dvl"
+--log="/opt/dataveillogs/CPROD.log" \
+--license="/opt/dataveilfiles/license.dvl"
 ```
 
 ### Test your shell script
@@ -290,6 +300,8 @@ You can validate it worked by examining the DataVeil logs and looking for a line
 Fri Aug 23 15:30:15 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on "SCOTT"
 ```
 
+#### Handling Upgrades
+If upgrading DataVeil, do not forget to run the chmodnix commands again.   You will not need to do anything to upgrade the Native Library, this should work without modification.
 
 # Trouble Shooting
 

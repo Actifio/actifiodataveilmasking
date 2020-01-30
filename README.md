@@ -164,21 +164,76 @@ For each stage of the process use a different database name.  For instance:
 * Name when mounted to masking server:   CPROD
 * Name when mounted to development server:   MPROD
 
-DataVeil needs to be unzip onto your masking server.  Unzip it and then create folders to hold your working files and logs.
-
 The steps we follow will be:
 
-1. Unzip DataVeil onto your masking server (you also need JRE 1.8)
+1. Unzip DataVeil onto your masking server.   Set permission and test for correct JAVA.  Install JAVA if needed and setup an X11 server to access DataVeil.
 1. License DataVeil and note where you put the license file.  Do not put it into the same folder a DataVeil as this will complicate upgrades.
 1. Mount production database to masking server using the ‘middle’ name (i.e. mount ‘prod’ as ‘CPROD’)
 1. Connect to the database and create Project using Actifio DataVeil and note the Project key name
 1. Save Project and note where you save the project
 1. Install shell script onto masking server and customize it
 
+
+DataVeil needs to be unzip onto your masking server.  Unzip it and then create folders to hold your working files and logs.
+After unziping the DataVeil zip file (which in this example we placed into the /opt folder), we need to run the three commands in the chmod_nix file:
+
+```
+# pwd
+/opt/dataveil
+# cat chmod_nix
+chmod +x DataVeilLaunchNix
+chmod +x bin/dataveil
+chmod +x batch/dataveil_cmd_nix
+# chmod +x DataVeilLaunchNix
+# chmod +x bin/dataveil
+# chmod +x batch/dataveil_cmd_nix
+```
+
+Now test for the correct JAVA.  In this example we clearly don't have it:
+
+```
+[root@oracle-mask-stg bin]# ./dataveil
+cp: cannot stat `/root/.dataveil/dev/config/Preferences/com/dataveil/dataveil.properties': No such file or directory
+which: no javac in (/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)
+Exception in thread "main" java.lang.UnsupportedClassVersionError: org/openide/filesystems/FileUtil : Unsupported major.minor version 52.0
+```
+
+We resolve this with:
+
+```yum install java-1.8.0-openjdk```
+
+We then test again but are till missing javac:
+
+```
+# cd /opt/dataveil/bin/
+# ./dataveil
+cp: cannot stat `/root/.dataveil/dev/config/Preferences/com/dataveil/dataveil.properties': No such file or directory
+which: no javac in (/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)
+```
+We resolve this with
+```yum install java-1.8.0-openjdk-devel```
+
+We now need an X11 client if we are going to use a Windows host to manage DataVeil.   XMing is a good choice.   Once you have it installed, SSH to the Linux server where DataVeil is installed with X11 forwarding enabled in PuTTY.  DataVeil should open on your Windows host, but running on the Linux host.   
+
+```
+# cd /opt
+# cd dataveil
+# cd bin
+# ./dataveil
+```
+Some Oracle commands that might be helpful (display current schema, display users, set password for users):
+
+```
+SQL> select sys_context( 'userenv', 'current_schema' ) from dual;
+SQL> select username from dba_users;
+SQL> alter user scott identified by password;
+```
+
+Once we have created a project file we are now ready to create our script
 The script file must be located in /act/scripts
 
 
-There are six customizations needed in the bat file:
+There are six customizations needed in the sh file:
 
 1. Change dataveil path to match yours
 1. Change Project path and name to match yours.    Make sure the project files are not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveilfiles
@@ -196,7 +251,7 @@ With all commands in one line:
 /opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveilfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveillogs/CPROD.log" --license="/opt/dataveilfiles/license.dvl"
 ```
 
-Or each parameter on a separate line separated with a backslash.   While this makes it visually eaiser to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
+Or each parameter on a separate line separated with a backslash.   While this makes it visually easier to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
 
 ```
 :set list

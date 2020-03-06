@@ -327,7 +327,7 @@ Please watch the following videos:
 
 ### DataVeil Native Functions
 
-DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   This comes in two parts.   Firstly you need to add /act/scripts/loadnativefunctions.sql
+DataVeil has the option  to use a Native Library to accelerate masking.     To use this you need to run an installation process against the database being masked.   This comes in two parts.   Firstly you need to add /act/scripts/loadnativefunctions.sql
 using the file found here in Github.   There are two things to customize:
 
 1. In the first line the DVNative.jar file path may need to be updated
@@ -354,6 +354,7 @@ You can validate it worked by examining the DataVeil logs and looking for a line
 ```
 Fri Aug 23 15:30:15 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on "SCOTT"
 ```
+This requires Java 1.6   If your Java is downlevel this process will fail, see troubleshooting for details.
 
 #### Handling Upgrades
 If upgrading DataVeil, do not forget to run the chmodnix commands again.   You will not need to do anything to upgrade the Native Library, this should work without modification.
@@ -389,4 +390,35 @@ mkdir /act/xslt
 cp /opt/dataveil/xslt/masking_result_xhtml.xslt /act/xslt/.
 cp /opt/dataveil/xslt/reports.css /act/xslt/.
 ```
+
+### Native functions wont load
+
+When running the native function setup you get this error:
+
+```
+SQL> @setup_functions.sql
+
+Package created.
+
+
+Package body created.
+
+SELECT DATAVEIL_NATIVE_PKG.DataVeilNativeVersion FROM DUAL
+                                                      *
+ERROR at line 1:
+ORA-29516: Aurora assertion failure: Assertion failure at eox.c:359
+Uncaught exception System error:   java/lang/UnsupportedClassVersionError
+```
+
+Check your Database (not system) Java version:
+
+```
+SQL> SELECT  dbms_java.get_ojvm_property(PROPSTRING=>'java.version') FROM dual;
+
+DBMS_JAVA.GET_OJVM_PROPERTY(PROPSTRING=>'JAVA.VERSION')
+--------------------------------------------------------------------------------
+1.5.0_10
+```
+
+If Java is not at least 1.6 this is your error.   You need to patch your Oracle Database (or upgrade it).
 

@@ -420,5 +420,5 @@ DBMS_JAVA.GET_OJVM_PROPERTY(PROPSTRING=>'JAVA.VERSION')
 1.5.0_10
 ```
 
-If Java is not at least 1.6 this is your error.   You need to patch your Oracle Database (or upgrade it).
+If Java is not at least 1.6 this is your problem.   You need to patch your Oracle Database (or upgrade it).
 

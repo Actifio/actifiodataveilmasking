@@ -102,7 +102,11 @@ Solution:  When mounting with the workflow, make sure the workflow has a valid u
 
 ### Supporting Videos For Microsoft SQL
 
-Please watch the following videos:
+Please watch the following videos either with this playlist:
+
+https://www.youtube.com/playlist?list=PLW0yhWx5VVo30acZo54iF2WhSyXUEwYmE
+
+Or one at a time:
 
 * https://youtu.be/f0lj6bRFxGQ
 * https://youtu.be/sh1_vk-1QY8

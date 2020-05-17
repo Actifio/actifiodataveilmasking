@@ -318,7 +318,11 @@ Fri Aug 16 13:18:07 AEST 2019 INFO DataVeil terminating with exit code = 0
 
 ### Supporting Videos For Oracle
 
-Please watch the following videos:
+Please watch the following videos either with this playlist:
+
+https://www.youtube.com/playlist?list=PLW0yhWx5VVo306ICkWNLAphHxVQDu7naH
+
+Or one at a time:
 
 * https://youtu.be/VNzXm4PR1V0
 * https://youtu.be/rbhKSlT8C90

@@ -112,6 +112,15 @@ Or one at a time:
 * https://youtu.be/sh1_vk-1QY8
 * https://youtu.be/VqxYX1L-mWA
 
+### Upgrading Dataveil
+
+1. Download new versionzip file 
+1. Unzip new versionzip file.  You should get a new dataveil folder.
+1. Rename the old dataveil folder using the old version
+1. Copy the new dataveil folder into place where the old one was
+1. Upgrade your native functions if required 
+
+
 
 ### DataVeil Native Functions
 
@@ -120,7 +129,7 @@ DataVeil has the option  to use a Native Library to accelerate masking.  To use 
 1. On the masking server create a dummy database called 'dummydb'.  This database does not need any data in it.
 1. In your dataveil folder there is a file located in a location similar to:   d:\dataveil\native\sqlserver\install_01_assembly.sql
 Edit this file and change the database name to 'dummydb' and the location of the relevant dll called DataVeilNativeCLR.dll
-You will need to make a total of three edits.
+You will need to make a total of three edits (enter the database name twice and change a path to the dll)
 1. Having edited the install_01_assembly.sql file, you need to load and run it using Microsoft SQL Server Manager
 1. Presuming the first SQL file runs without error, then load and run the second SQL file called install_02_udf.sql
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
@@ -133,7 +142,6 @@ Now when running masking, in the log file you should see a line like this:
 ```
 Fri Aug 23 12:02:23 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on dummydb.dbo
 ```
-
 #### Upgrading MS SQL Native Functions
 
 A new version of dataveil may bring a new version of native function, in which case the old native functions will no longer work. In this example Native Functions 1.0.0 is installed, but DataVeil is now expecting 1.0.1:

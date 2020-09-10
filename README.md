@@ -176,7 +176,7 @@ For each stage of the process use a different database name.  For instance:
 * Name when mounted to masking server:   CPROD
 * Name when mounted to development server:   MPROD
 
-The steps we follow will be:
+The steps we follow to install or upgrade would be:
 
 1. Unzip DataVeil onto your masking server.   Set permission and test for correct JAVA.  Install JAVA if needed and setup an X11 server to access DataVeil.
 1. License DataVeil and note where you put the license file.  Do not put it into the same folder a DataVeil as this will complicate upgrades.
@@ -184,7 +184,6 @@ The steps we follow will be:
 1. Connect to the database and create Project using Actifio DataVeil and note the Project key name
 1. Save Project and note where you save the project
 1. Install shell script onto masking server and customize it
-
 
 DataVeil needs to be unzip onto your masking server.  Unzip it and then create folders to hold your working files and logs.
 After unziping the DataVeil zip file (which in this example we placed into the /opt folder), we need to run the three commands in the chmod_nix file:
@@ -201,9 +200,37 @@ chmod +x batch/dataveil_cmd_nix
 # chmod +x batch/dataveil_cmd_nix
 ```
 
+Here is a typical set of install commands 
+```
+cd /tmp.  
+wget <supplied URL>
+unzip actifio_dataveil_4_1_0.zip 
+mv dataveil /opt/.
+cd /opt/dataveil
+chmod +x DataVeilLaunchNix
+chmod +x bin/dataveil
+chmod +x batch/dataveil_cmd_nix
+```
+
+Upgrade commands are almost the same with one extra step (you shouldn't need to do anything for Native Functions):
+```
+cd /tmp.  
+wget <supplied URL>
+unzip actifio_dataveil_4_1_0.zip 
+mv /opt/dataveil /opt/dataveil_old
+mv dataveil /opt/.
+cd /opt/dataveil
+chmod +x DataVeilLaunchNix
+chmod +x bin/dataveil
+chmod +x batch/dataveil_cmd_nix
+```
+
+
+
 Now test for the correct JAVA.  In this example we clearly don't have it:
 
 ```
+[root@oracle-mask-stg bin]# cd /opt/dataveil/bin
 [root@oracle-mask-stg bin]# ./dataveil
 cp: cannot stat `/root/.dataveil/dev/config/Preferences/com/dataveil/dataveil.properties': No such file or directory
 which: no javac in (/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)

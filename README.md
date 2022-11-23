@@ -69,7 +69,7 @@ Presuming the relevant database is still mounted and ready.
 Run the bat file with the word *test* as shown in the example:
 
 ~~~
-cd “Program Files\Actifio\Scripts”
+cd "C:\Program Files\Actifio\Scripts”
 dvmask.bat test
 ~~~
 or
@@ -170,7 +170,7 @@ You will need to make a total of three edits (enter the database name twice and 
 
 Now when running masking, in the log file you should see a line like this:
 ```
-Fri Aug 23 12:02:23 AEST 2019 INFO Found DataVeil native function library version 1.0.0 on dummydb.dbo
+Wed Nov 23 06:50:16 GMT 2022 INFO DataVeil native function library version 1.2.0 found at dummydb.dbo for masking DBMS [UnmaskProdDB]
 ```
 #### Upgrading MS SQL Native Functions
 

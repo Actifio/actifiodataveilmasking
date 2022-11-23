@@ -163,7 +163,7 @@ You will need to make a total of three edits (enter the database name twice and 
 1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql``` which requires no edits
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
 1. The final step is to edit your project to reference this DB during masking. 
-    * Go to the DBMS top and select your database under Network
+    * Go to the DBMS menu at top left and select your database under Network
     * Go to Settings > Database > Native Functions
     * The Function call prefix box should say **dbo** which you should change to **dummydb.dbo**
 

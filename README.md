@@ -150,7 +150,7 @@ You will need to make a total of three edits (enter the database name twice and 
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
 1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the dummydb name in the relevant section of the project with .dbo at the end.   So in this example we used dummydb and it appears in the project as shown in the image below:
 
-![DataVeil Native Function](https://github.com/Actifio/actifiodataveilmasking/blob/master/dv_sql_native.jpg)
+![DataVeil Native Function](https://github.com/Actifio/actifiodataveilmasking/blob/main/dv_sql_native.jpg)
 
 
 Now when running masking, in the log file you should see a line like this:

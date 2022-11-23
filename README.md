@@ -444,7 +444,7 @@ This requires Java 1.6   If your Java is downlevel this process will fail, see t
 #### Handling Upgrades
 If upgrading DataVeil, do not forget to run the chmodnix commands again.   You will not need to do anything to upgrade the Native Library, this should work without modification.
 
-# Trouble Shooting
+## Trouble Shooting
 
 ### When starting DataVeil on Linux you get a no javac message
 

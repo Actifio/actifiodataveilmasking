@@ -1,23 +1,23 @@
 # Masking with DataVeil
 
-This readme contains a section for [SQL Server](#sql-server-masking-with-dataveil) and a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
+This readme first contains a section for [SQL Server](#sql-server-masking-with-dataveil) and then a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
 
 ## SQL Server Masking with DataVeil
 
-This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking with Actifio.
+This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking.
 
 ### Requirements
 
-An SQL Server Database we can mask.  This is our Production Database.
-In Production we need three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
+An SQL Server Database that requires data masking.  This is our Production Database.
+In Production we would use three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
 
 
 * Production Server (Production Side – hosts the source DB)
 * Masking Server (Production Side – masks the source DB)
-* Development Server (Non-Production Side – uses the masked DB)
+* Development Server or Servers (Non-Production Side – uses the masked DB)
 
-For PoC we could use just one server (we don’t need three).
-But in production you would never mask and run non-prod on the production server.
+For PoC we could use just one server for the entire process (we don’t need three).
+But in production it would not be normal to run run masking and non-production activities on the production server.
 
 For each stage of the process use a different database name.  For instance:
 
@@ -35,15 +35,18 @@ On the masking server, you need to ensure that:
 The steps we follow for initial setup will be:
 
 1. Mount production database to masking server using the *middle* name (so mount ```ProdDB``` as ```UnmaskProdDB```)
-1. Install DataVeil onto your masking server (you also need JRE 1.8) by copying the ```dataVeil``` folder out of the unpacked zip file 
-1. Create a DV_Files folder and copy the license file into it
-1. Start DataVeil and point it to where you put the license file (one time task)
-1. Go to **Database > Add Database Connection** leaving the ```Database Type``` on SQL Server
+1. Place DataVeil onto your masking server (you also need JRE 1.8) by copying the ```dataVeil``` folder out of the unpacked zip file.
+1. Create a ```DV_Files``` folder and copy the license file into it
+1. Start DataVeil and point it to where you put the license file (this is a one time task)
+1. In Dataveil go to **Database > Add Database Connection** leaving the ```Database Type``` set to SQL Server
 1. Add your Masking Host Hostname and Instance name and use ```Test Connection``` to check connect to your databases
 1. Use ```Get Schema``` to load the DB schema
-1. Define your masking rules
-1. Save Project and note where you save the project file, the project name and the project key value
-1. Install the bat file onto the masking server and customize it as described in the nest steps
+1. Run discovery and define your masking rules
+1. Save the Project and note:
+    * Where you saved the project file
+    * The project name 
+    * The project key value
+1. Add the bat file to the masking server and customize it as described in the nest steps
 
 The bat file must be located in:
 
@@ -115,6 +118,14 @@ Wed Nov 23 00:53:24 GMT 2022 INFO Project summary: Sensitive values with configu
 Wed Nov 23 00:53:24 GMT 2022 INFO Masking Run of project "prodbmasking" completed on November 23, 2022 at 12:53:24 AM GMT, elapsed time = 10 seconds. No errors or warnings.
 Wed Nov 23 00:53:25 GMT 2022 INFO DataVeil terminating with exit code = 0
 ```
+### Create a LiveClone workflow
+
+Now that we have setup our masking server, we are ready to automate masking and presentation of masked data to our non-production hosts.
+
+Use the procedure [here](https://cloud.google.com/backup-disaster-recovery/docs/access-data/create-liveclone-workflows) to create the workflow
+
+In the **Scripts Options** section put the name of your bat file in both the pre and post sections.  
+
 
 ### Supporting Videos For Microsoft SQL
 
@@ -130,28 +141,30 @@ Or one at a time:
 
 ### Upgrading Dataveil
 
-1. Download new version zip file 
-1. Unzip new version zip file.  You should get a new dataveil folder.
-1. Rename the old dataveil folder using the old version
+Because the location of the Dataveil binaries is hard coded in our BAT file, we don't want to change its location during an upgrade so do as follows:
+
+1. Download the new version zip file 
+1. Unzip the new version zip file.  You should get a new dataveil folder.
+1. Rename the old (Previous version) dataveil folder using the old version number (for backup if needed)
 1. Copy the new dataveil folder into place where the old one was
-1. Upgrade your native functions if required 
+1. Upgrade the [native functions](#sql-server-native-functions) if required 
 
 
-### DataVeil Native Functions
+### SQL Server Native Functions
 
-DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
+DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given it is not wise to connect masking software to a production system and that inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
 1. On the masking server create a dummy database called **dummydb**  This database does not need any data in it.
 1. In your dataveil folder there is a file located in a location similar to:   ```d:\dataveil\native\sqlserver\install_01_assembly_from_dll.sql```
 Edit this file and change the database name to **dummydb** and the location of the relevant dll called ```DataVeilNativeCLR.dll```
-You will need to make a total of three edits (enter the database name twice and change a path to the dll)
-1. Having edited the ```install_01_assembly.sql``` file, you need to load and run it using Microsoft SQL Server Manager
-1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql``` which requires no edits
+You will need to make a total of three edits (enter the database name twice and change the path to the dll)
+1. Having edited the ```install_01_assembly_from_dll.sql``` file, you need to load and run it using Microsoft SQL Server Manager
+1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql``` (which requires no edits)
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
 1. The final step is to edit your project to reference this DB during masking. 
     * Go to the DBMS menu at top left and select your database under Network
     * Go to Settings > Database > Native Functions
-    * The Function call prefix box should say **dbo** which you should change to **dummydb.dbo**
+    * The Function call prefix box should contain **dbo** which you should change to **dummydb.dbo**
 
 ![native_functions](dv_native_functions_sql_server.jpg)
 
@@ -183,40 +196,39 @@ During unmount or unmount portion of reprovision job, you may get an error like 
 Solution:  When mounting with the workflow, make sure the workflow has a valid user/password in the Advanced Setting that has the right to manage SQL DBs.
 
 
-# Oracle Masking with Actifio and DataVeil
+# Oracle Masking with DataVeil
 
-This readme describes how to use the shell script in this respository along with the DataVeil software to perform data masking with Actifio.
+This readme describes how to use the shell script in this repository along with the DataVeil software to perform data masking.
 
 ### Requirements
 
 One Oracle Source Database we can mask.  This is our Production Database.
 We need three Oracle Servers, each with Oracle installed.  Match the versions between all servers.
 
-
 * Production Server (Production Side – hosts the source DB)
 * Masking Server (Production Side – masks the source DB)
 * Development Server (Non-Production Side – uses the masked DB)
 
 For PoC we could use just one server (we don’t need three).
-But in production you would never mask and run non-prod on the production server.
+But in production you would it be very unwise to run production, masking and non-production on the production server.
 
 For each stage of the process use a different database name.  For instance:
 
-* Production Name:   prod
-* Name when mounted to masking server:   CPROD
-* Name when mounted to development server:   MPROD
+* Production Name:   ```prod```
+* Name when mounted to masking server:   ```cprod```
+* Name when mounted to development server:   ```mprod```
 
 The steps we follow to install or upgrade would be:
 
 1. Unzip DataVeil onto your masking server.   Set permission and test for correct JAVA.  Install JAVA if needed and setup an X11 server to access DataVeil.
-1. License DataVeil and note where you put the license file.  Do not put it into the same folder a DataVeil as this will complicate upgrades.
-1. Mount production database to masking server using the ‘middle’ name (i.e. mount ‘prod’ as ‘CPROD’)
-1. Connect to the database and create Project using Actifio DataVeil and note the Project key name
+1. License DataVeil and note where you put the license file.  Do not put it into the same folder as DataVeil as this will complicate upgrades.
+1. Mount production database to masking server using the ‘middle’ name (i.e. mount ```prod``` as ```cprod```)
+1. Connect to the database and create Project using DataVeil and note the Project key name
 1. Save Project and note where you save the project
 1. Install shell script onto masking server and customize it
 
-DataVeil needs to be unzip onto your masking server.  Unzip it and then create folders to hold your working files and logs.
-After unziping the DataVeil zip file (which in this example we placed into the /opt folder), we need to run the three commands in the chmod_nix file:
+DataVeil needs to be unzipped onto your masking server.  Unzip it and then create folders to hold your working files and logs.
+After unzipping the DataVeil zip file (which in this example we placed into the /opt folder), we need to run the three commands in the chmod_nix file:
 
 ```
 # pwd
@@ -255,8 +267,6 @@ chmod +x bin/dataveil
 chmod +x batch/dataveil_cmd_nix
 ```
 
-
-
 Now test for the correct JAVA.  In this example we clearly don't have it:
 
 ```
@@ -271,7 +281,7 @@ We resolve this with:
 
 ```yum install java-1.8.0-openjdk```
 
-We then test again but are till missing javac:
+We then test again but are still missing javac:
 
 ```
 # cd /opt/dataveil/bin/
@@ -285,35 +295,32 @@ We resolve this with
 We now need an X11 client if we are going to use a Windows host to manage DataVeil.   XMing is a good choice.   Once you have it installed, SSH to the Linux server where DataVeil is installed with X11 forwarding enabled in PuTTY.  DataVeil should open on your Windows host, but running on the Linux host.   
 
 ```
-# cd /opt
-# cd dataveil
-# cd bin
-# ./dataveil
+cd /opt/dataveil/bin
+./dataveil
 ```
 Some Oracle commands that might be helpful (display current schema, display users, set password for users):
 
 ```
-SQL> select sys_context( 'userenv', 'current_schema' ) from dual;
-SQL> select username from dba_users;
-SQL> alter user scott identified by password;
+select sys_context( 'userenv', 'current_schema' ) from dual;
+select username from dba_users;
+alter user scott identified by password;
 ```
 
 Once we have created a project file we are now ready to create our script
-The script file must be located in /act/scripts
-
+The script file must be located in ```/act/scripts```
 
 There are six customizations needed in the sh file:
 
 1. Change dataveil path to match yours
-1. Change Project path and name to match yours.    Make sure the project files are not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveilfiles
+1. Change Project path and name to match yours.    Make sure the project files are not in the DataVeil folder as this will complicate upgrades.   In this example we use ```/opt/dataveilfiles```
 1. Change key defined in project to match yours
-1. Change license path and name to match yours.   Make sure the license file is not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveilfiles
-1. Change log file path.  Make sure the log folder is not in the DataVeil folder as this will complicate upgrades.   In this example we use /opt/dataveillogs
+1. Change license path and name to match yours.   Make sure the license file is not in the DataVeil folder as this will complicate upgrades.   In this example we use /```opt/dataveilfiles```
+1. Change log file path.  Make sure the log folder is not in the DataVeil folder as this will complicate upgrades.   In this example we use ```/opt/dataveillogs```
 
 If you change the .sh file name you need to change the workflow to point to the new name of the script
-You must use the /act/scripts folder, no other folder can be used
+You must use the ```/act/scripts``` folder, no other folder can be used
 
-Note that the string to start DataVeil can be in the sheel script in either of these formats:
+Note that the string to start DataVeil can be in the shell script in either of these formats:
 
 With all commands in one line:
 ```
@@ -339,7 +346,7 @@ Then confirm there are no spaces after each backlash.
 
 Presuming we have created the project file and placed the script file in the correct spot.
 Presuming the relevant database is still mounted and ready. 
-Run the shell script file with the word ‘test’ as shown in the example:
+Run the shell script file with the word **test** as shown in the example:
 
 ~~~
 /act/scripts/dvmask.sh test
@@ -347,7 +354,7 @@ Run the shell script file with the word ‘test’ as shown in the example:
 
 Now check the DataVeil log file defined in your bat file to ensure good masking has occurred.  You should actually see the result in your shell window anyway, but it is good to evaluate the logs were created.
 
-This is an example of succesful masking execution:
+This is an example of successful masking execution:
 
 ```
 Fri Aug 16 13:17:58 AEST 2019 INFO DataVeil started in batch mode.
@@ -400,7 +407,7 @@ Or one at a time:
 
 ### DataVeil Native Functions
 
-DataVeil has the option  to use a Native Library to accelerate masking.     To use this you need to run an installation process against the database being masked.   This comes in two parts.   Firstly you need to add /act/scripts/loadnativefunctions.sql
+DataVeil has the option  to use a Native Library to accelerate masking.     To use this you need to run an installation process against the database being masked.   This comes in two parts.   Firstly you need to add ```/act/scripts/loadnativefunctions.sql```
 using the file found here in Github.   There are two things to customize:
 
 1. In the first line the DVNative.jar file path may need to be updated
@@ -412,12 +419,12 @@ ALTER SESSION SET CURRENT_SCHEMA = scott;
 exit;
 ```
 
-Once you have set this file up,  there is a hashed line in dvmask.sh that needs to be unhashed and edited:
+Once you have set this file up,  there is a hashed line in ```dvmask.sh``` that needs to be unhashed and edited:
 
-1.  It uses su - oracle.   Normally the oracle user is used for mounts, but this might not be the case
-1.  It switches to /opt/dataveil/native/oracle but your DataVeil install location may be different
-1.  It uses an SID of CPROD.   Yours will be different
-1.  It calls /act/scripts/loadnativefunctions.sql   Clearly if you used a different name and location these need to be set correctly.
+1.  It uses ```su - oracle```   Normally the oracle user is used for mounts, but this might not be the case
+1.  It switches to ```/opt/dataveil/native/oracle``` but your DataVeil install location may be different
+1.  It uses an SID of **cprod**.   Yours will be different
+1.  It calls ```/act/scripts/loadnativefunctions.sql```   Clearly if you used a different name and location these need to be set correctly.
 
 ```
 su - oracle -c 'cd /opt/dataveil/native/oracle;export ORACLE_SID=CPROD;sqlplus / as sysdba @/act/scripts/loadnativefunctions.sql;exit'

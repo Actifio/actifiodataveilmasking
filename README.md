@@ -2,11 +2,11 @@
 
 This readme contains a section for [Microsoft SQL Server](#microsoft-sql-server-masking-with-actifio-and-dataveil) and a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
 
-# Microsoft SQL Server Masking with Actifio and DataVeil
+## Microsoft SQL Server Masking with Actifio and DataVeil
 
 This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking with Actifio.
 
-## Requirements
+### Requirements
 
 An SQL Server Database we can mask.  This is our Production Database.
 In Production we need three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
@@ -62,7 +62,7 @@ If you change the .bat file name you need to change the workflow to point to the
 You must use the correct Scripts folder, no other folder can be used
 DO NOT put any other files called by the Batch file into ```C:\Program Files```
 
-## Test your bat file
+### Test your bat file
 
 Presuming we have created the project file and placed the bat file in the correct spot.
 Presuming the relevant database is still mounted and ready. 
@@ -116,7 +116,7 @@ Wed Nov 23 00:53:24 GMT 2022 INFO Masking Run of project "prodbmasking" complete
 Wed Nov 23 00:53:25 GMT 2022 INFO DataVeil terminating with exit code = 0
 ```
 
-## Supporting Videos For Microsoft SQL
+### Supporting Videos For Microsoft SQL
 
 Please watch the following videos either with this playlist:
 
@@ -128,7 +128,7 @@ Or one at a time:
 * https://youtu.be/sh1_vk-1QY8
 * https://youtu.be/VqxYX1L-mWA
 
-## Upgrading Dataveil
+### Upgrading Dataveil
 
 1. Download new version zip file 
 1. Unzip new version zip file.  You should get a new dataveil folder.
@@ -137,7 +137,7 @@ Or one at a time:
 1. Upgrade your native functions if required 
 
 
-## DataVeil Native Functions
+### DataVeil Native Functions
 
 DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
@@ -159,7 +159,7 @@ Now when running masking, in the log file you should see a line like this:
 ```
 Wed Nov 23 06:50:16 GMT 2022 INFO DataVeil native function library version 1.2.0 found at dummydb.dbo for masking DBMS [UnmaskProdDB]
 ```
-### Upgrading MS SQL Native Functions
+#### Upgrading MS SQL Native Functions
 
 A new version of dataveil may bring a new version of native function, in which case the old native functions will no longer work. In this example Native Functions 1.0.0 is installed, but DataVeil is now expecting 1.0.1:
 ```
@@ -169,11 +169,11 @@ To upgrade the simplest procedure is to:
 1.  Delete **dummydb**
 1.  Reinstall Native Functions as per the instructions above.
 
-## TroubleShooting 
+### TroubleShooting 
 
 This section will contain some suggestions for troubleshooting
 
-### Unmount or reprovision fails with permissions errors
+#### Unmount or reprovision fails with permissions errors
 
 During unmount or unmount portion of reprovision job, you may get an error like this:
 

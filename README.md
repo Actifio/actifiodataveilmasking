@@ -1,14 +1,17 @@
 # Masking with DataVeil
 
+This repository can be used to integrate [DataVeil](https://www.dataveil.com) masking software with [Actifio](https://docs.actifio.com/Actifio-GO) and [Google Cloud Backup and DR](https://cloud.google.com/backup-disaster-recovery/docs) 
+
 This readme first contains a section for [SQL Server](#sql-server-masking-with-dataveil) and then a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
 
 ## SQL Server Masking with DataVeil
 
-This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking.
+This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking on an SQL Server database.
 
 ### Requirements
 
 An SQL Server Database that requires data masking.  This is our Production Database.
+
 In Production we would use three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
 
 
@@ -17,7 +20,7 @@ In Production we would use three Windows Servers, each with Microsoft SQL instal
 * Development Server or Servers (Non-Production Side – uses the masked DB)
 
 For PoC we could use just one server for the entire process (we don’t need three).
-But in production it would not be normal to run run masking and non-production activities on the production server.
+But in production it would not be normal to run production, masking and non-production activities all on the production server.
 
 For each stage of the process use a different database name.  For instance:
 
@@ -25,12 +28,14 @@ For each stage of the process use a different database name.  For instance:
 * Name when mounted to masking server:   **UnmaskProdDB**
 * Name when mounted to development server:  **MaskedProdDB**
 
-DataVeil needs to be copied onto your masking server.  Unzip it and then create folders to hold your working files and logs.
+### SQL Server must accept TCP Connections
 
 On the masking server, you need to ensure that:
 
 1. The ```SQL Server Browser``` service is set to **Automatic** startup and is is in the **Running** status.  Do this by opening ```Services.msc```
 1. in ```SQL Server Configuration Manager``` that TCP connections to the database are Enabled even if only to 127.0.0.1
+
+### DataVeil setup
 
 The steps we follow for initial setup will be:
 

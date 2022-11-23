@@ -167,7 +167,7 @@ You will need to make a total of three edits (enter the database name twice and 
     * Go to Settings > Database > Native Functions
     * The Function call prefix box should say **dbo** which you should change to **dummydb.dbo**
 
-![native_functions]dv_native_functions_sql_server.jpg
+![native_functions](dv_native_functions_sql_server.jpg)
 
 Now when running masking, in the log file you should see a line like this:
 ```

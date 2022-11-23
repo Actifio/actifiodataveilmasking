@@ -8,8 +8,8 @@ This readme describes how to use the bat file in this respository along with the
 
 ### Requirements
 
-One Microsoft SQL Source Database we can mask.  This is our Production Database.
-We need three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
+One Microsoft SQL Server Database we can mask.  This is our Production Database.
+In Production we need three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
 
 
 * Production Server (Production Side – hosts the source DB)
@@ -21,34 +21,45 @@ But in production you would never mask and run non-prod on the production server
 
 For each stage of the process use a different database name.  For instance:
 
-* Production Name:   Finance
-* Name when mounted to masking server:   maskfinance
-* Name when mounted to development server:   devfinance
+* Production Name:   **ProdDB**
+* Name when mounted to masking server:   **UnmaskProdDB**
+* Name when mounted to development server:  **MaskedProdDB**
 
-DataVeil needs to be copied onto your masking server.  Unpack it and then create folders to hold your working files and logs.
+DataVeil needs to be copied onto your masking server.  Unzip it and then create folders to hold your working files and logs.
 
-The steps we follow will be:
+On the host where you will do masking, you need to ensure that:
 
-1. Install DataVeil onto your masking server (you also need JRE 1.8)
-1. License DataVeil and note where you put the license file
-1. Mount production database to masking server using the ‘middle’ name (i.e. mount ‘finance’ as ‘maskfinance’)
-1. Create Project using Actifio DataVeil and note the Project key name
-1. Save Project and note where you save the project
-1. Install bat file onto masking server and customize it
+1. The ```SQL Server Browser``` service is set to **Automatic** startup and is is in the **Running** status.  Do this by opening ```Services.msc```
+1. in ```SQL Server Configuration Manager``` that TCP connections to the database are Enabled even if only to 127.0.0.1
 
-The bat file must be located in C:\Program Files\Actifio\Scripts\dvmask.bat
+The steps we follow to setup will be:
 
+1. Mount production database to masking server using the *middle* name (so mount ```ProdDB``` as ```UnmaskProdDB```)
+1. Install DataVeil onto your masking server (you also need JRE 1.8) by copying the ```dataVeil``` folder out of the unpacked zip file 
+1. Create a DV_Files folder and copy the license file into it
+1. Start DataVeil and point it to where you put the license file (one time task)
+1. Go to **Database > Add Database Connection** leaving the ```Database Type``` on SQL Server
+1. Add your Masking Host Hostname and Instance name and use ```Test Connection``` to check connect to your databases
+1. Use ```Get Schema``` to load the DB schema
+1. Define your masking rules
+1. Save Project and note where you save the project file, the project name and the project key value
+1. Install the bat file onto the masking server and customize it as described in the nest steps
+
+The bat file must be located in:
+
+* Actifio: C:\Program Files\Actifio\Scripts\dvmask.bat
+* Backup and DR:  C:\Program Files\Google Cloud Backup and DR\Scripts\dvmask.bat
 
 There are five customizations needed in the bat file:
 
-1. Change dataveil64.exe path to match yours
+1. Change dataveil64.exe path to match yours 
 1. Change Project path and name to match yours
 1. Change key defined in project to match yours
 1. Change license path and name to match yours
 1. Change log file path
 
 If you change the .bat file name you need to change the workflow to point to the new name of the script
-You must use the C:\Program Files\Actifio\Scripts folder, no other folder can be used
+You must use the correct Scripts folder, no other folder can be used
 DO NOT put any other files called by the Batch file into C:\Program Files
 
 ### Test your bat file
@@ -58,14 +69,18 @@ Presuming the relevant database is still mounted and ready.
 Run the bat file with the word ‘test’ as shown in the example:
 
 ~~~
-c:
 cd “Program Files\Actifio\Scripts”
+dvmask.bat test
+~~~
+or
+~~~
+cd "C:\Program Files\Google Cloud Backup and DR\Scripts\"
 dvmask.bat test
 ~~~
 
 Now check the DataVeil log file defined in your bat file to ensure good masking has occurred.  You should actually see the result in your CMD prompt window anyway, but it is good to evaluate the logs were created.
 
-This is an example of succesful masking execution:
+This is an example of successful masking execution:
 
 ```
 2019-08-14 19:16:14.569 GEN-DEBUG [4924] Job_3399316 WinImpersonator: domain: au, username: actadmin

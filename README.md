@@ -162,9 +162,10 @@ You will need to make a total of three edits (enter the database name twice and 
 1. Having edited the ```install_01_assembly.sql``` file, you need to load and run it using Microsoft SQL Server Manager
 1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql``` which requires no edits
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
-1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the **dummydb** name in the relevant section of the project with .dbo at the end.   So in this example we used **dummydb** and it appears in the project as shown in the image below:
-
-![DataVeil Native Function](https://github.com/Actifio/actifiodataveilmasking/blob/main/dv_sql_native.jpg)
+1. The final step is to edit your project to reference this DB during masking. 
+    * Go to the DBMS top and select your database under Network
+    * Go to Settings > Database > Native Functions
+    * The Function call prefix box should say **dbo** which you should change to **dummydb.dbo**
 
 
 Now when running masking, in the log file you should see a line like this:

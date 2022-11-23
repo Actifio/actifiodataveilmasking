@@ -1,10 +1,10 @@
 # Masking with DataVeil
 
-This readme contains a section for Microsoft SQL and a section for Oracle.
+This readme contains a section for [Microsoft SQL Server](#microsoft-sql-server-masking-with-actifio-and-dataveil) and a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
 
-## Microsoft SQL Masking with Actifio and DataVeil
+## Microsoft SQL Server Masking with Actifio and DataVeil
 
-This readme describes how to use the bat file in this respository along with the DataVeil software to perform data masking with Actifio.
+This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking with Actifio.
 
 ### Requirements
 
@@ -47,12 +47,12 @@ The steps we follow to setup will be:
 
 The bat file must be located in:
 
-* Actifio: C:\Program Files\Actifio\Scripts\dvmask.bat
-* Backup and DR:  C:\Program Files\Google Cloud Backup and DR\Scripts\dvmask.bat
+* Actifio: ```C:\Program Files\Actifio\Scripts\dvmask.bat```
+* Backup and DR: ```C:\Program Files\Google Cloud Backup and DR\Scripts\dvmask.bat```
 
 There are five customizations needed in the bat file:
 
-1. Change dataveil64.exe path to match yours 
+1. Change ```dataveil64.exe``` path to match yours 
 1. Change Project path and name to match yours
 1. Change key defined in project to match yours
 1. Change license path and name to match yours
@@ -60,13 +60,13 @@ There are five customizations needed in the bat file:
 
 If you change the .bat file name you need to change the workflow to point to the new name of the script
 You must use the correct Scripts folder, no other folder can be used
-DO NOT put any other files called by the Batch file into C:\Program Files
+DO NOT put any other files called by the Batch file into ```C:\Program Files```
 
 ### Test your bat file
 
 Presuming we have created the project file and placed the bat file in the correct spot.
 Presuming the relevant database is still mounted and ready. 
-Run the bat file with the word ‘test’ as shown in the example:
+Run the bat file with the word *test* as shown in the example:
 
 ~~~
 cd “Program Files\Actifio\Scripts”
@@ -83,22 +83,37 @@ Now check the DataVeil log file defined in your bat file to ensure good masking 
 This is an example of successful masking execution:
 
 ```
-2019-08-14 19:16:14.569 GEN-DEBUG [4924] Job_3399316 WinImpersonator: domain: au, username: actadmin
-2019-08-14 19:16:14.647 GEN-INFO  [4924] Job_3399316 WinImpersonator: Ending impersonation of au\actadmin
-2019-08-14 19:16:14.662 GEN-INFO  [4924] Job_3399316 Launched script with arguments [0]="C:\Program Files\Actifio\scripts\dvmask.bat" [1]=post pid 1572
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 Script: 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 C:\Windows\system32>echo on 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 C:\Windows\system32>if "mount" == "scrub-mount" if "true" == "true" if "post" == "post" (GOTO maskcommand  ) 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 C:\Windows\system32>if "mount" == "mount" if "true" == "true" if "post" == "post" (GOTO maskcommand  ) 
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 Script:  is on.
-2019-08-14 19:16:14.694 GEN-INFO  [4924] Job_3399316 Script: FinMask_av.dvp" --key="actifio" --license="D:\\DV_Files\\license.dvl" --log="D:\\logs\\dvlog.txt!" 
-2019-08-14 19:16:16.756 GEN-INFO  [6476] Job_3399316 End eventloop ( Provider: VssConnector ServiceType:RESTORE )
-2019-08-14 19:16:18.772 GEN-INFO  [4916] Job_3399316 Terminated connection with host 10.65.5.35 (ipaddress 10.65.5.35:56538) 
-2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 Script: 
-2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 C:\Windows\system32>IF 0 EQU 0 (GOTO cleanexit ) 
-2019-08-14 19:16:28.287 GEN-INFO  [4924] Job_3399316 
+Wed Nov 23 00:53:07 GMT 2022 INFO DataVeil started in batch mode.
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --project=D:\DV_Files\prodbmasking.dvp
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --key=<specified>
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --refreshschema=true
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --compilewarning=continue
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --createdirs=true
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --log=D:\DV_Files\dvlog.txt!
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --component_home=D:\dataveil\DataVeilUserData\Components
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --dataset_home=D:\dataveil\DataVeilUserData\Datasets
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --reportdir=D:\dataveil\DataVeilUserData\Masking\Results\Masking Current
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --reportkeep=20
+Wed Nov 23 00:53:07 GMT 2022 INFO Using param --license=D:\DV_Files\license.dvl
+Wed Nov 23 00:53:09 GMT 2022 INFO Loading project file D:\DV_Files\prodbmasking.dvp
+Wed Nov 23 00:53:13 GMT 2022 INFO Refresh Schema of "UnmaskProdDB (Windows\SQLEXPRESS)" has completed.
+Wed Nov 23 00:53:14 GMT 2022 INFO DataVeil native function library on dbo not found, not accessible or version not compatible when attempting to mask data on [UnmaskProdDB]
+Wed Nov 23 00:53:14 GMT 2022 INFO Checking schema on "UnmaskProdDB (Windows\SQLEXPRESS)" for changes that could affect masking definitions...
+Wed Nov 23 00:53:14 GMT 2022 INFO Compile completed successfully.
+Wed Nov 23 00:53:14 GMT 2022 INFO DataVeil version 4.7.1
+Wed Nov 23 00:53:14 GMT 2022 INFO Java: Vendor=Oracle Corporation, Version=18.0.2, Home=D:\DataVeil\jdk\win_x64\jdk-18.0.2
+Wed Nov 23 00:53:14 GMT 2022 INFO OS: Name=Windows Server 2019, Version=10.0, Architecture=amd64
+Wed Nov 23 00:53:14 GMT 2022 INFO Database UnmaskProdDB (Windows\SQLEXPRESS) is on Microsoft SQL Server 2019 (RTM) - 15.0.2000.5 (X64), Sep 24 2019 13:48:23, Copyright (C) 2019 Microsoft Corporation, Express Edition (64-bit) on Windows Server 2019 Datacenter 10.0 <X64> (Build 17763: ) (Hypervisor)
+Wed Nov 23 00:53:14 GMT 2022 INFO Project prodbmasking: Database UnmaskProdDB has defined 1 sensitive columns containing a combined total of 19,972 values. This includes 19,972 values using Premium masks.
+Wed Nov 23 00:53:15 GMT 2022 INFO Preparing Person Given Name data..
+Wed Nov 23 00:53:19 GMT 2022 INFO Started column masking for [UnmaskProdDB].[Person].[Person].[FirstName] (0 null); containing 19,972 rows...
+Wed Nov 23 00:53:22 GMT 2022 INFO ...completed PersonFirstName SQL mask for column [UnmaskProdDB].[Person].[Person].[FirstName]; 19,972 of 19,972 rows processed in 3 seconds
+Wed Nov 23 00:53:22 GMT 2022 INFO .completed column masking for [UnmaskProdDB].[Person].[Person].[FirstName] (0 null); 19,972 of 19,972 rows processed in 3 seconds
+Wed Nov 23 00:53:23 GMT 2022 INFO Started writing table [UnmaskProdDB].[Person].[Person] using Update table IO mode, 19,972 rows...
+Wed Nov 23 00:53:23 GMT 2022 INFO .completed writing masked values to table [UnmaskProdDB].[Person].[Person] (as update of original table, 19,972 rows in 0 seconds)
+Wed Nov 23 00:53:24 GMT 2022 INFO Project summary: Sensitive values with configured masks = 19,972. Sensitive values masked = 19,972.
+Wed Nov 23 00:53:24 GMT 2022 INFO Masking Run of project "prodbmasking" completed on November 23, 2022 at 12:53:24 AM GMT, elapsed time = 10 seconds. No errors or warnings.
+Wed Nov 23 00:53:25 GMT 2022 INFO DataVeil terminating with exit code = 0
 ```
 
 ### TroubleShooting 
@@ -141,14 +156,14 @@ Or one at a time:
 
 DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
-1. On the masking server create a dummy database called 'dummydb'.  This database does not need any data in it.
-1. In your dataveil folder there is a file located in a location similar to:   d:\dataveil\native\sqlserver\install_01_assembly.sql
-Edit this file and change the database name to 'dummydb' and the location of the relevant dll called DataVeilNativeCLR.dll
+1. On the masking server create a dummy database called **dummydb**  This database does not need any data in it.
+1. In your dataveil folder there is a file located in a location similar to:   ```d:\dataveil\native\sqlserver\install_01_assembly.sql```
+Edit this file and change the database name to **dummydb** and the location of the relevant dll called ```DataVeilNativeCLR.dll```
 You will need to make a total of three edits (enter the database name twice and change a path to the dll)
-1. Having edited the install_01_assembly.sql file, you need to load and run it using Microsoft SQL Server Manager
-1. Presuming the first SQL file runs without error, then load and run the second SQL file called install_02_udf.sql
+1. Having edited the ```install_01_assembly.sql``` file, you need to load and run it using Microsoft SQL Server Manager
+1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql```
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
-1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the dummydb name in the relevant section of the project with .dbo at the end.   So in this example we used dummydb and it appears in the project as shown in the image below:
+1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the **dummydb** name in the relevant section of the project with .dbo at the end.   So in this example we used **dummydb** and it appears in the project as shown in the image below:
 
 ![DataVeil Native Function](https://github.com/Actifio/actifiodataveilmasking/blob/main/dv_sql_native.jpg)
 
@@ -164,7 +179,7 @@ A new version of dataveil may bring a new version of native function, in which c
 Tue Sep 03 09:00:13 AEST 2019 INFO DataVeil native function library is not available on dummydb.dbo. Expecting DataVeil Native Library version 1.0.1 or later. Found incompatible version 1.0.0
 ```
 To upgrade the simplest procedure is to:
-1.  Delete 'dummydb' 
+1.  Delete **dummydb**
 1.  Reinstall Native Functions as per the instructions above.
 
 

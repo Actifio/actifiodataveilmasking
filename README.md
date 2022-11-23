@@ -8,7 +8,7 @@ This readme describes how to use the bat file in this repository along with the 
 
 ### Requirements
 
-One Microsoft SQL Server Database we can mask.  This is our Production Database.
+An SQL Server Database we can mask.  This is our Production Database.
 In Production we need three Windows Servers, each with Microsoft SQL installed.  In general always use the same version of MS SQL on each server, as you may not be able to mount from a higher version to a lower version (although the reverse is normally possible, meaning production could a be a lower version than the masking server).
 
 
@@ -27,12 +27,12 @@ For each stage of the process use a different database name.  For instance:
 
 DataVeil needs to be copied onto your masking server.  Unzip it and then create folders to hold your working files and logs.
 
-On the host where you will do masking, you need to ensure that:
+On the masking server, you need to ensure that:
 
 1. The ```SQL Server Browser``` service is set to **Automatic** startup and is is in the **Running** status.  Do this by opening ```Services.msc```
 1. in ```SQL Server Configuration Manager``` that TCP connections to the database are Enabled even if only to 127.0.0.1
 
-The steps we follow to setup will be:
+The steps we follow for initial setup will be:
 
 1. Mount production database to masking server using the *middle* name (so mount ```ProdDB``` as ```UnmaskProdDB```)
 1. Install DataVeil onto your masking server (you also need JRE 1.8) by copying the ```dataVeil``` folder out of the unpacked zip file 
@@ -144,12 +144,11 @@ Or one at a time:
 
 ### Upgrading Dataveil
 
-1. Download new versionzip file 
-1. Unzip new versionzip file.  You should get a new dataveil folder.
+1. Download new version zip file 
+1. Unzip new version zip file.  You should get a new dataveil folder.
 1. Rename the old dataveil folder using the old version
 1. Copy the new dataveil folder into place where the old one was
 1. Upgrade your native functions if required 
-
 
 
 ### DataVeil Native Functions
@@ -157,11 +156,11 @@ Or one at a time:
 DataVeil has the option  to use a Native Library to accelerate masking.  To use this you need to run an installation process against the database being masked.   However given we do not want to bring masking software anywhere near a production system and inserting this function into the database being masked would require additional post-script activity, the solution is to do the following:
 
 1. On the masking server create a dummy database called **dummydb**  This database does not need any data in it.
-1. In your dataveil folder there is a file located in a location similar to:   ```d:\dataveil\native\sqlserver\install_01_assembly.sql```
+1. In your dataveil folder there is a file located in a location similar to:   ```d:\dataveil\native\sqlserver\install_01_assembly_from_dll.sql```
 Edit this file and change the database name to **dummydb** and the location of the relevant dll called ```DataVeilNativeCLR.dll```
 You will need to make a total of three edits (enter the database name twice and change a path to the dll)
 1. Having edited the ```install_01_assembly.sql``` file, you need to load and run it using Microsoft SQL Server Manager
-1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql```
+1. Presuming the first SQL file runs without error, then load and run the second SQL file called ```install_02_udf.sql``` which requires no edits
 1. Presuming this also runs without error then we have loaded the native functions into a local DB which can be used for masking other DBs.
 1. The final step is to edit your project to reference this DB during masking.  This is done by supplying the **dummydb** name in the relevant section of the project with .dbo at the end.   So in this example we used **dummydb** and it appears in the project as shown in the image below:
 

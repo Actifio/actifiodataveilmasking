@@ -1,8 +1,8 @@
 # Masking with DataVeil
 
-This readme contains a section for [Microsoft SQL Server](#microsoft-sql-server-masking-with-actifio-and-dataveil) and a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
+This readme contains a section for [SQL Server](#sql-server-masking-with-dataveil) and a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
 
-## Microsoft SQL Server Masking with Actifio and DataVeil
+## SQL Server Masking with DataVeil
 
 This readme describes how to use the bat file in this repository along with the DataVeil software to perform data masking with Actifio.
 

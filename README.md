@@ -40,7 +40,7 @@ On the masking server, you need to ensure that:
 The steps we follow for initial setup will be:
 
 1. Mount production database to masking server using the *middle* name (so mount ```ProdDB``` as ```UnmaskProdDB```)
-1. Place DataVeil onto your masking server (you also need JRE 1.8) by copying the ```dataVeil``` folder out of the unpacked zip file.
+1. Place DataVeil onto your masking server by copying the ```dataVeil``` folder out of the unpacked zip file.
 1. Create a ```DV_Files``` folder and copy the license file into it
 1. Start DataVeil and point it to where you put the license file (this is a one time task)
 1. In Dataveil go to **Database > Add Database Connection** leaving the ```Database Type``` set to SQL Server
@@ -225,7 +225,7 @@ For each stage of the process use a different database name.  For instance:
 
 The steps we follow to install or upgrade would be:
 
-1. Unzip DataVeil onto your masking server.   Set permission and test for correct JAVA.  Install JAVA if needed and setup an X11 server to access DataVeil.
+1. Unzip DataVeil onto your masking server.   
 1. License DataVeil and note where you put the license file.  Do not put it into the same folder as DataVeil as this will complicate upgrades.
 1. Mount production database to masking server using the ‘middle’ name (i.e. mount ```prod``` as ```cprod```)
 1. Connect to the database and create Project using DataVeil and note the Project key name

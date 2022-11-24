@@ -251,64 +251,38 @@ Here is a typical set of install commands
 ```
 cd /tmp.  
 wget <supplied URL>
-unzip actifio_dataveil_4_1_0.zip 
+tar -xf dataveil_4_7_1_linux_x64.tar.gz 
 mv dataveil /opt/.
 cd /opt/dataveil
-chmod +x DataVeilLaunchNix
 chmod +x bin/dataveil
-chmod +x batch/dataveil_cmd_nix
 ```
 
 Upgrade commands are almost the same with one extra step (you shouldn't need to do anything for Native Functions):
 ```
 cd /tmp.  
 wget <supplied URL>
-unzip actifio_dataveil_4_1_0.zip 
+tar -xf dataveil_4_7_1_linux_x64.tar.gz  
 mv /opt/dataveil /opt/dataveil_old
 mv dataveil /opt/.
 cd /opt/dataveil
-chmod +x DataVeilLaunchNix
 chmod +x bin/dataveil
-chmod +x batch/dataveil_cmd_nix
 ```
-
-Now test for the correct JAVA.  In this example we clearly don't have it:
-
-```
-[root@oracle-mask-stg bin]# cd /opt/dataveil/bin
-[root@oracle-mask-stg bin]# ./dataveil
-cp: cannot stat `/root/.dataveil/dev/config/Preferences/com/dataveil/dataveil.properties': No such file or directory
-which: no javac in (/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)
-Exception in thread "main" java.lang.UnsupportedClassVersionError: org/openide/filesystems/FileUtil : Unsupported major.minor version 52.0
-```
-
-We resolve this with:
-
-```yum install java-1.8.0-openjdk```
-
-We then test again but are still missing javac:
-
-```
-# cd /opt/dataveil/bin/
-# ./dataveil
-cp: cannot stat `/root/.dataveil/dev/config/Preferences/com/dataveil/dataveil.properties': No such file or directory
-which: no javac in (/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)
-```
-We resolve this with
-```yum install java-1.8.0-openjdk-devel```
 
 We now need an X11 client if we are going to use a Windows host to manage DataVeil.   XMing is a good choice.   Once you have it installed, SSH to the Linux server where DataVeil is installed with X11 forwarding enabled in PuTTY.  DataVeil should open on your Windows host, but running on the Linux host.   
 
-```
-cd /opt/dataveil/bin
-./dataveil
-```
+* Download and install XMing
+* Download and install PuTTY
+* SSH to your Oracle host using Putty and run:  ```touch ~/.Xauthority```
+* Create a new PuTTY session, under **Connection > SSH > X11** select **Enable X11 forwarding** and set **X display location** to ```localhost:0.0```
+* Run this command in the PuTTY session:  ``` /opt/dataveil/run_dataveil_gui```
+
+
 Some Oracle commands that might be helpful (display current schema, display users, set password for users):
 
 ```
 select sys_context( 'userenv', 'current_schema' ) from dual;
 select username from dba_users;
-alter user scott identified by password;
+alter user sys identified by password;
 ```
 
 Once we have created a project file we are now ready to create our script
@@ -332,7 +306,7 @@ With all commands in one line:
 /opt/dataveil/bin/dataveil --nosplash --nogui -J-Dnetbeans.logger.console=true -J-Dorg.level=WARNING -J-Xms64m -J-Xmx512m --refreshschema=false --compilewarning=continue --createdirs=true --project="/opt/dataveilfiles/prodmask.dvp" --key="actifio" --log="/opt/dataveillogs/CPROD.log" --license="/opt/dataveilfiles/license.dvl"
 ```
 
-Or each parameter on a separate line separated with a backslash.   While this makes it visually easier to edit, if there are any spaces to the right of a baskclash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
+Or each parameter on a separate line separated with a backslash.   While this makes it visually easier to edit, if there are any spaces to the right of a backslash, the command will be split and errors will occur.   If using vi editor turn on visual spaces with:
 
 ```
 :set list

@@ -233,19 +233,7 @@ The steps we follow to install or upgrade would be:
 1. Install shell script onto masking server and customize it
 
 DataVeil needs to be unzipped onto your masking server.  Unzip it and then create folders to hold your working files and logs.
-After unzipping the DataVeil zip file (which in this example we placed into the /opt folder), we need to run the three commands in the chmod_nix file:
 
-```
-# pwd
-/opt/dataveil
-# cat chmod_nix
-chmod +x DataVeilLaunchNix
-chmod +x bin/dataveil
-chmod +x batch/dataveil_cmd_nix
-# chmod +x DataVeilLaunchNix
-# chmod +x bin/dataveil
-# chmod +x batch/dataveil_cmd_nix
-```
 
 Here is a typical set of install commands 
 ```
@@ -253,8 +241,6 @@ cd /tmp.
 wget <supplied URL>
 tar -xf dataveil_4_7_1_linux_x64.tar.gz 
 mv dataveil /opt/.
-cd /opt/dataveil
-chmod +x bin/dataveil
 ```
 
 Upgrade commands are almost the same with one extra step (you shouldn't need to do anything for Native Functions):
@@ -264,8 +250,6 @@ wget <supplied URL>
 tar -xf dataveil_4_7_1_linux_x64.tar.gz  
 mv /opt/dataveil /opt/dataveil_old
 mv dataveil /opt/.
-cd /opt/dataveil
-chmod +x bin/dataveil
 ```
 
 We now need an X11 client if we are going to use a Windows host to manage DataVeil.   XMing is a good choice.   Once you have it installed, SSH to the Linux server where DataVeil is installed with X11 forwarding enabled in PuTTY.  DataVeil should open on your Windows host, but running on the Linux host.   

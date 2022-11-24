@@ -2,7 +2,7 @@
 
 This repository can be used to integrate [DataVeil](https://www.dataveil.com) masking software with [Actifio](https://docs.actifio.com/Actifio-GO) and [Google Cloud Backup and DR](https://cloud.google.com/backup-disaster-recovery/docs) 
 
-This readme first contains a section for [SQL Server](#sql-server-masking-with-dataveil) and then a section for [Oracle](#oracle-masking-with-actifio-and-dataveil)
+This readme first contains a section for [SQL Server](#sql-server-masking-with-dataveil) and then a section for [Oracle](#oracle-masking-with-dataveil)
 
 ## SQL Server Masking with DataVeil
 
